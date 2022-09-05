@@ -3,7 +3,7 @@ import currency_converter
 
 
 # l'application hérite ici de la class QtWidgets.QWidget ,
-# QWidget représente la fenetre et toute les manipulations possible dessus
+# QWidget représente la fenêtre et toutes les manipulations possibles dessus
 class App(QtWidgets.QWidget):
     def __init__(self):
         # super permet de récupérer la méthode init de la class parent
@@ -12,29 +12,40 @@ class App(QtWidgets.QWidget):
         self.c = currency_converter.CurrencyConverter()
         self.setWindowTitle(" Convertisseur de devises")
         self.setup_ui()
+        self.setup_css()
         self.set_default_values()
         self.setup_connections()
 
     def setup_ui(self):
-        # création d'un layout horizontal , le self de droite permet de préciser que le layout est lié a la fenetre principal
+        # création d'un layout horizontal, le self de droite permet de préciser que le layout est lié à la fenêtre principale
         self.layout = QtWidgets.QHBoxLayout(self)
-        # cbb et un préfixe pour rendre le code plus compréhensible , ici Combobox
-        # spn et un préfixe pour rendre le code plus compréhensible , ici SpinBox
-        # btn et un préfixe pour rendre le code plus compréhensible , ici PushButton
+        # cbb est un préfixe pour rendre le code plus compréhensible, ici Combobox
+        # spn est un préfixe pour rendre le code plus compréhensible, ici SpinBox
+        # btn est un préfixe pour rendre le code plus compréhensible, ici PushButton
         self.cbb_devisesFrom = QtWidgets.QComboBox()
         self.spn_montant = QtWidgets.QSpinBox()
         self.cbb_devisesTo = QtWidgets.QComboBox()
         self.spn_montantConverti = QtWidgets.QSpinBox()
         self.btn_inverser = QtWidgets.QPushButton("Inverser devises")
-        #         ajout des widgets créer au layout
+        #         ajout des widgets au layout
         self.layout.addWidget(self.cbb_devisesFrom)
         self.layout.addWidget(self.spn_montant)
         self.layout.addWidget(self.cbb_devisesTo)
         self.layout.addWidget(self.spn_montantConverti)
         self.layout.addWidget(self.btn_inverser)
 
+    def setup_css(self):
+        self.setStyleSheet("""
+        background-color: rgb(30, 30, 30);
+        color: rgb(204, 204, 204);
+        border: none;     
+        font-size: 15px;   
+        """)
+
+        self.btn_inverser.setStyleSheet("background-color:red;")
+
     def set_default_values(self):
-        # cbb prend en parametre seulement des list contenant des strings
+        # cbb prend en paramètre seulement des list contenant des strings
         self.cbb_devisesFrom.addItems(sorted(list(self.c.currencies)))
         self.cbb_devisesTo.addItems(sorted(list(self.c.currencies)))
         self.cbb_devisesFrom.setCurrentText("EUR")
@@ -47,7 +58,7 @@ class App(QtWidgets.QWidget):
         self.spn_montantConverti.setValue(100)
 
     def setup_connections(self):
-        # connection des méthodes aux layout , et utilisation des signaux
+        # connexion des méthodes aux layouts , et utilisation des signaux
         self.cbb_devisesFrom.activated.connect(self.compute)
         self.cbb_devisesTo.activated.connect(self.compute)
         self.spn_montant.valueChanged.connect(self.compute)
@@ -75,10 +86,10 @@ class App(QtWidgets.QWidget):
         self.compute()
 
 
-# permet de créer l'application ou nous aurons accés a nos différentes fenetre ,   argument [] obligatoire
-# ! différent de 'application de base
+# permets de créer l'application où nous aurons accès à nos différentes fenêtres ,   argument [] obligatoire
+# ! différent de l'application de base
 app = QtWidgets.QApplication([])
-# création d'une fenetre pour l'application déja lancer
+# création d'une fenêtre pour l'application déjà lancer
 win = App()
 # affichage du widget permettant d'afficher le contenu a l'utilisateur
 win.show()
